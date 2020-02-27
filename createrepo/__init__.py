@@ -1287,7 +1287,7 @@ class MetaDataGenerator:
                         compress_type = 'bz2'
                         
                     # rename from silly name to not silly name
-                    os.rename(tmp_result_path, resultpath)
+                    shutil.move(tmp_result_path, resultpath)
                     compressed_name = '%s.%s' % (good_name, compress_type)
                     result_compressed = os.path.join(repopath, compressed_name)
                     db_csums[ftype] = misc.checksum(sumtype, resultpath)
@@ -1308,7 +1308,7 @@ class MetaDataGenerator:
                                            db_compressed_sums[ftype], good_name, compress_type)
                         csum_result_compressed =  os.path.join(repopath,
                                                            csum_compressed_name)
-                        os.rename(result_compressed, csum_result_compressed)
+                        shutil.move(result_compressed, csum_result_compressed)
                         result_compressed = csum_result_compressed
                         compressed_name = csum_compressed_name
 
@@ -1345,7 +1345,7 @@ class MetaDataGenerator:
                 res_file = '%s-%s.%s' % (csum, main_name, self.conf.compress_type)
                 orig_file = os.path.join(repopath, rpm_file)
                 dest_file = os.path.join(repopath, res_file)
-                os.rename(orig_file, dest_file)
+                shutil.move(orig_file, dest_file)
             else:
                 res_file = rpm_file
             rpm_file = res_file
@@ -1403,7 +1403,7 @@ class MetaDataGenerator:
 
         if os.path.exists(output_final_dir):
             try:
-                os.rename(output_final_dir, output_old_dir)
+                shutil.move(output_final_dir, output_old_dir)
             except:
                 raise MDError, _('Error moving final %s to old dir %s' % (
                                  output_final_dir, output_old_dir))
@@ -1411,10 +1411,10 @@ class MetaDataGenerator:
         output_temp_dir = os.path.join(self.conf.outputdir, self.conf.tempdir)
 
         try:
-            os.rename(output_temp_dir, output_final_dir)
+            shutil.move(output_temp_dir, output_final_dir)
         except:
             # put the old stuff back
-            os.rename(output_old_dir, output_final_dir)
+            shutil.move(output_old_dir, output_final_dir)
             raise MDError, _('Error moving final metadata into place')
 
         for f in ['primaryfile', 'filelistsfile', 'otherfile', 'repomdfile',
@@ -1483,7 +1483,7 @@ class MetaDataGenerator:
                     'Could not remove old metadata file: %s: %s') % (oldfile, e)
             else:
                 try:
-                    os.rename(oldfile, finalfile)
+                    shutil.move(oldfile, finalfile)
                 except OSError, e:
                     msg = _('Could not restore old non-metadata file: %s -> %s') % (oldfile, finalfile)
                     msg += _('Error was %s') % e

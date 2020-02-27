@@ -16,6 +16,7 @@
 
 
 import os
+import shutil
 def _get_umask():
    oumask = os.umask(0)
    os.umask(oumask)
@@ -94,7 +95,7 @@ class CreateRepoPackage(YumLocalPackage):
                 #  tempfile forces 002 ... we want to undo that, so that users
                 # can share the cache. BZ 833350.
                 os.chmod(tmpfilename, 0666 ^ _b4rpm_oumask)
-                os.rename(tmpfilename, csumfile)
+                shutil.move(tmpfilename, csumfile)
             except:
                 pass
 

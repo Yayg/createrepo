@@ -19,6 +19,7 @@
 import os
 import os.path
 import re
+import shutil
 import sys
 import bz2
 import gzip
@@ -179,7 +180,7 @@ def checksum_and_rename(fn_path, sumtype='sha256'):
         fn = fn_match.groups()[0]
     csum_fn = csum + '-' + fn
     csum_path = os.path.join(fndir, csum_fn)
-    os.rename(fn_path, csum_path)
+    shutil.move(fn_path, csum_path)
     return (csum, csum_path)
 
 
